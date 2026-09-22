@@ -1,0 +1,30 @@
+{
+  "name": "canesense-ai",
+  "version": "1.0.0",
+  "description": "AI-Native Sugarcane Crop Intelligence for Crop Mapping, Moisture-Stress Detection & Irrigation Advisory",
+  "private": true,
+  "scripts": {
+    "dev": "concurrently \"npm run dev --prefix frontend\" \"npm run dev --prefix backend\"",
+    "dev:frontend": "npm run dev --prefix frontend",
+    "dev:backend": "npm run dev --prefix backend",
+    "build": "npm run build --prefix frontend && npm run build --prefix backend",
+    "build:frontend": "npm run build --prefix frontend",
+    "build:backend": "npm run build --prefix backend",
+    "install:all": "npm install && npm install --prefix frontend && npm install --prefix backend"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.0"
+  },
+  "keywords": [
+    "precision-agriculture",
+    "sugarcane",
+    "remote-sensing",
+    "satellite-imagery",
+    "crop-monitoring",
+    "irrigation-advisory",
+    "AI",
+    "machine-learning"
+  ],
+  "author": "CaneSense AI Team",
+  "license": "MIT"
+}
