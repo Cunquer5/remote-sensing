@@ -1441,3 +1441,335 @@ button {
     height: 360px;
   }
 }
+
+/* ============================================================
+   7G - Field Intelligence
+   ============================================================ */
+
+.intelligence-section {
+  margin-top: 26px;
+  animation: cardRise 0.65s ease-out 0.25s both;
+}
+
+.intelligence-header {
+  margin-bottom: 14px;
+}
+
+.section-kicker {
+  display: block;
+  margin-bottom: 5px;
+  color: #718078;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+}
+
+.intelligence-header h2 {
+  margin: 0;
+  color: #123c2a;
+  font-size: 1.45rem;
+  font-weight: 750;
+}
+
+.intelligence-header p {
+  margin: 5px 0 0;
+  color: #607168;
+  font-size: 0.9rem;
+}
+
+.intelligence-grid {
+  display: grid;
+  grid-template-columns: 0.9fr 1.2fr 1.2fr;
+  gap: 16px;
+}
+
+.intelligence-card {
+  min-width: 0;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.96);
+  border: 1px solid rgba(18, 60, 42, 0.10);
+  border-radius: 17px;
+  box-shadow: 0 8px 24px rgba(18, 60, 42, 0.07);
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.intelligence-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 28px rgba(18, 60, 42, 0.11);
+}
+
+.intelligence-card-title {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+}
+
+.intelligence-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 13px;
+  background: #edf5ef;
+  font-size: 1.25rem;
+}
+
+.intelligence-card-title span:not(.intelligence-icon) {
+  display: block;
+  color: #718078;
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+}
+
+.intelligence-card-title strong {
+  display: block;
+  margin-top: 2px;
+  color: #123c2a;
+  font-size: 1.7rem;
+}
+
+.intelligence-mini-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 9px;
+  margin-top: 18px;
+}
+
+.intelligence-mini-grid > div {
+  padding: 11px;
+  border-radius: 10px;
+  background: #f5f8f6;
+}
+
+.intelligence-mini-grid span {
+  display: block;
+  color: #748179;
+  font-size: 0.68rem;
+  font-weight: 700;
+}
+
+.intelligence-mini-grid strong {
+  display: block;
+  margin-top: 4px;
+  color: #173f2d;
+  font-size: 1.05rem;
+}
+
+.intelligence-card-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 14px;
+  color: #123c2a;
+  font-size: 0.74rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+}
+
+.stress-distribution {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.distribution-row {
+  min-width: 0;
+}
+
+.distribution-label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 4px;
+  color: #596a62;
+  font-size: 0.75rem;
+}
+
+.distribution-label > span {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.distribution-label strong {
+  color: #183e2d;
+}
+
+.distribution-track {
+  height: 7px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: #edf1ee;
+}
+
+.distribution-bar {
+  height: 100%;
+  min-width: 0;
+  border-radius: inherit;
+  transition: width 0.7s ease-out;
+}
+
+.distribution-bar.very-low {
+  background: #2e7d32;
+}
+
+.distribution-bar.low {
+  background: #8bc34a;
+}
+
+.distribution-bar.medium {
+  background: #f9a825;
+}
+
+.distribution-bar.high {
+  background: #ef6c00;
+}
+
+.distribution-bar.very-high {
+  background: #c62828;
+}
+
+.attention-count {
+  min-width: 26px;
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: #fff0e8;
+  color: #c65317;
+  text-align: center;
+  font-size: 0.72rem;
+}
+
+.attention-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 190px;
+  overflow-y: auto;
+}
+
+.attention-field {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 11px 12px;
+  border: 1px solid rgba(18, 60, 42, 0.08);
+  border-radius: 11px;
+  background: #f7f9f8;
+  text-align: left;
+  cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.attention-field:hover {
+  transform: translateX(3px);
+  background: #eef5f0;
+  border-color: rgba(18, 60, 42, 0.16);
+}
+
+.attention-field-main {
+  min-width: 0;
+}
+
+.attention-field-main strong {
+  display: block;
+  color: #173f2d;
+  font-size: 0.9rem;
+}
+
+.attention-field-main span {
+  display: block;
+  margin-top: 2px;
+  color: #718078;
+  font-size: 0.68rem;
+}
+
+.attention-field-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+  color: #66766e;
+  font-size: 0.72rem;
+}
+
+.attention-badge {
+  padding: 4px 8px;
+  border-radius: 999px;
+  color: white;
+  font-size: 0.66rem;
+  font-weight: 800;
+}
+
+.attention-badge.high {
+  background: #ef6c00;
+}
+
+.attention-badge.very-high {
+  background: #c62828;
+}
+
+.intelligence-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100px;
+  color: #718078;
+  font-size: 0.82rem;
+  text-align: center;
+}
+
+/* 7G responsive layout */
+
+@media (max-width: 1100px) {
+  .intelligence-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .attention-card {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 700px) {
+  .intelligence-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .attention-card {
+    grid-column: auto;
+  }
+
+  .intelligence-mini-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .intelligence-card {
+    padding: 16px;
+  }
+
+  .intelligence-mini-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .attention-field {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .attention-field-meta {
+    width: 100%;
+    justify-content: space-between;
+  }
+}

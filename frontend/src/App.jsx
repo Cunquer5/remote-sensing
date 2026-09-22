@@ -6,59 +6,77 @@ import StressMap from "./components/StressMap";
 
 function Dashboard({ user, onLogout }) {
   const isAdmin = user.role === "admin";
-  const [selectedField, setSelectedField] = useState(null);
-    const [stats, setStats] = useState(null);
-  const [statsLoading, setStatsLoading] = useState(true);
-  const [statsError, setStatsError] = useState("");
+const [selectedField, setSelectedField] = useState(null);
+const [stats, setStats] = useState(null);
+const [fields, setFields] = useState([]);
+const [statsLoading, setStatsLoading] = useState(true);
+const [statsError, setStatsError] = useState("");
 
     useEffect(() => {
+  const fetchDashboardData = async () => {
+    try {
+      setStatsLoading(true);
+      setStatsError("");
 
-    const fetchStats = async () => {
+      const token = localStorage.getItem("sugarcane_token");
 
-      try {
-
-        setStatsLoading(true);
-        setStatsError("");
-
-        const token = localStorage.getItem("sugarcane_token");
-
-        const endpoint = isAdmin
-          ? "/api/admin/stats"
-          : "/api/farmer/stats";
-
-        const response = await fetch(endpoint, {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        });
-
-        if (!response.ok) {
-          throw new Error("Unable to load dashboard statistics");
-        }
-
-        const data = await response.json();
-
-        setStats(data);
-
-      } catch (error) {
-
-        console.error("Statistics error:", error);
-
-        setStatsError(
-          "Unable to load live statistics."
-        );
-
-      } finally {
-
-        setStatsLoading(false);
-
+      if (!token) {
+        throw new Error("Authentication token not found.");
       }
 
-    };
+      const headers = {
+        Authorization: `Bearer ${token}`
+      };
 
-    fetchStats();
+      const statsEndpoint = isAdmin
+        ? "/api/admin/stats"
+        : "/api/farmer/stats";
 
-  }, [isAdmin]);
+      const fieldsEndpoint = isAdmin
+        ? "/api/admin/fields"
+        : "/api/farmer/fields";
+
+      const [statsResponse, fieldsResponse] =
+        await Promise.all([
+          fetch(statsEndpoint, { headers }),
+          fetch(fieldsEndpoint, { headers })
+        ]);
+
+      if (!statsResponse.ok) {
+        throw new Error(
+          "Unable to load dashboard statistics."
+        );
+      }
+
+      if (!fieldsResponse.ok) {
+        throw new Error(
+          "Unable to load authorized field data."
+        );
+      }
+
+      const statsData = await statsResponse.json();
+      const fieldsData = await fieldsResponse.json();
+
+      setStats(statsData);
+      setFields(fieldsData);
+
+    } catch (error) {
+      console.error(
+        "Dashboard data error:",
+        error
+      );
+
+      setStatsError(
+        "Unable to load live dashboard data."
+      );
+
+    } finally {
+      setStatsLoading(false);
+    }
+  };
+
+  fetchDashboardData();
+}, [isAdmin]);
 
   return (
     <div className="app">
@@ -269,6 +287,294 @@ function Dashboard({ user, onLogout }) {
 </div>
 
         </section>
+
+{/* Field Intelligence */}
+<section className="intelligence-section">
+
+  <div className="intelligence-header">
+    <div>
+      <span className="section-kicker">
+        {isAdmin
+          ? "REGIONAL FIELD INTELLIGENCE"
+          : "MY FIELD INTELLIGENCE"}
+      </span>
+
+      <h2>
+        Water Stress Overview
+      </h2>
+
+      <p>
+        {isAdmin
+          ? "A quick overview of monitored fields and areas requiring attention."
+          : "A quick overview of your monitored fields and areas requiring attention."}
+      </p>
+    </div>
+  </div>
+
+
+  <div className="intelligence-grid">
+
+    {/* Overview */}
+    <div className="intelligence-card overview-card">
+
+      <div className="intelligence-card-title">
+        <span className="intelligence-icon">
+          🌱
+        </span>
+
+        <div>
+          <span>FIELDS MONITORED</span>
+
+          <strong>
+            {statsLoading
+              ? "—"
+              : stats?.totalFields ?? "—"}
+          </strong>
+        </div>
+      </div>
+
+
+      <div className="intelligence-mini-grid">
+
+        <div>
+          <span>Need Attention</span>
+
+          <strong>
+            {statsLoading || !stats
+              ? "—"
+              : stats.stress.high +
+                stats.stress.veryHigh}
+          </strong>
+        </div>
+
+
+        <div>
+          <span>Very High</span>
+
+          <strong>
+            {statsLoading || !stats
+              ? "—"
+              : stats.stress.veryHigh}
+          </strong>
+        </div>
+
+
+        {isAdmin && (
+          <div>
+            <span>Farmers</span>
+
+            <strong>
+              {statsLoading || !stats
+                ? "—"
+                : stats.totalFarmers}
+            </strong>
+          </div>
+        )}
+
+      </div>
+
+    </div>
+
+
+    {/* Stress Distribution */}
+    <div className="intelligence-card distribution-card">
+
+      <div className="intelligence-card-heading">
+        <span>STRESS DISTRIBUTION</span>
+      </div>
+
+
+      <div className="stress-distribution">
+
+        {[
+          ["Very Low", "veryLow", "very-low"],
+          ["Low", "low", "low"],
+          ["Medium", "medium", "medium"],
+          ["High", "high", "high"],
+          ["Very High", "veryHigh", "very-high"]
+        ].map(
+          ([label, key, colorClass]) => {
+
+            const count =
+              stats?.stress?.[key] ?? 0;
+
+            const total =
+              stats?.totalFields || 1;
+
+            const width =
+              `${Math.max(
+                (count / total) * 100,
+                count > 0 ? 8 : 0
+              )}%`;
+
+            return (
+              <div
+                className="distribution-row"
+                key={key}
+              >
+
+                <div className="distribution-label">
+                  <span>
+                    <span
+                      className={`legend-dot ${colorClass}`}
+                    ></span>
+
+                    {label}
+                  </span>
+
+                  <strong>
+                    {statsLoading ? "—" : count}
+                  </strong>
+                </div>
+
+
+                <div className="distribution-track">
+                  <div
+                    className={`distribution-bar ${colorClass}`}
+                    style={{
+                      width:
+                        statsLoading
+                          ? "0%"
+                          : width
+                    }}
+                  ></div>
+                </div>
+
+              </div>
+            );
+          }
+        )}
+
+      </div>
+
+    </div>
+
+
+    {/* Attention Fields */}
+    <div className="intelligence-card attention-card">
+
+      <div className="intelligence-card-heading">
+        <span>FIELDS REQUIRING ATTENTION</span>
+
+        <span className="attention-count">
+          {statsLoading || !stats
+            ? "—"
+            : stats.stress.high +
+              stats.stress.veryHigh}
+        </span>
+      </div>
+
+
+      {statsLoading ? (
+        <div className="intelligence-empty">
+          Loading field intelligence...
+        </div>
+      ) : fields.filter(
+          (field) =>
+            field.stress_level === "High" ||
+            field.stress_level === "Very High"
+        ).length === 0 ? (
+
+        <div className="intelligence-empty">
+          No fields currently require attention.
+        </div>
+
+      ) : (
+
+        <div className="attention-list">
+
+          {fields
+            .filter(
+              (field) =>
+                field.stress_level === "High" ||
+                field.stress_level === "Very High"
+            )
+            .sort((a, b) => {
+              const severity = {
+                "Very High": 2,
+                "High": 1
+              };
+
+              return (
+                severity[b.stress_level] -
+                severity[a.stress_level]
+              );
+            })
+            .map((field) => {
+
+              const stressInfo =
+                field.stress_level === "Very High"
+                  ? "very-high"
+                  : "high";
+
+              return (
+                <button
+                  key={field.field_id}
+                  className="attention-field"
+                  onClick={() => {
+                    setSelectedField({
+                      ...field,
+                      stressColor:
+                        field.stress_level ===
+                        "Very High"
+                          ? "#c62828"
+                          : "#ef6c00",
+                      stressDescription:
+                        field.stress_level ===
+                        "Very High"
+                          ? "Severe water stress"
+                          : "Significant water stress",
+                      description:
+                        field.stress_level ===
+                        "Very High"
+                          ? "Severe water stress"
+                          : "Significant water stress"
+                    });
+                  }}
+                >
+
+                  <div className="attention-field-main">
+
+                    <strong>
+                      {field.field_id}
+                    </strong>
+
+                    {isAdmin &&
+                      field.farmer_name && (
+                        <span>
+                          {field.farmer_name}
+                        </span>
+                      )}
+
+                  </div>
+
+
+                  <div className="attention-field-meta">
+
+                    <span
+                      className={`attention-badge ${stressInfo}`}
+                    >
+                      {field.stress_level}
+                    </span>
+
+                    <span>
+                      {field.area ?? "N/A"} acres
+                    </span>
+
+                  </div>
+
+                </button>
+              );
+            })}
+
+        </div>
+      )}
+
+    </div>
+
+  </div>
+
+</section>
 
         {/* Map + Side Panel */}
         <section className="content-grid">
