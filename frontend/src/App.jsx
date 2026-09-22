@@ -6,6 +6,7 @@ import StressMap from "./components/StressMap";
 
 function Dashboard({ user, onLogout }) {
   const isAdmin = user.role === "admin";
+  const [selectedField, setSelectedField] = useState(null);
     const [stats, setStats] = useState(null);
   const [statsLoading, setStatsLoading] = useState(true);
   const [statsError, setStatsError] = useState("");
@@ -294,8 +295,8 @@ function Dashboard({ user, onLogout }) {
             </div>
 
             <div className="map-container">
-              <StressMap />
-            </div>
+  <StressMap onFieldSelect={setSelectedField} />
+</div>
 
           </div>
 
@@ -366,6 +367,117 @@ function Dashboard({ user, onLogout }) {
           </aside>
 
         </section>
+
+                {/* Selected Field Details */}
+        {selectedField && (
+          <section className="field-details-section">
+
+            <div className="field-details-card">
+
+              <div className="field-details-header">
+
+                <div>
+                  <span className="field-details-label">
+                    SELECTED FIELD
+                  </span>
+
+                  <h2>
+                    {selectedField.field_id}
+                  </h2>
+                </div>
+
+                <button
+                  className="field-details-close"
+                  onClick={() => setSelectedField(null)}
+                  aria-label="Close field details"
+                >
+                  ×
+                </button>
+
+              </div>
+
+
+              <div className="field-details-grid">
+
+                <div className="field-detail-item">
+                  <span>Water Stress</span>
+
+                  <strong
+                    className="stress-value"
+                    style={{
+                      color:
+                        selectedField.stressColor
+                    }}
+                  >
+                    {selectedField.stress_level}
+                  </strong>
+                </div>
+
+
+                <div className="field-detail-item">
+                  <span>Area</span>
+
+                  <strong>
+                    {selectedField.area ?? "N/A"} acres
+                  </strong>
+                </div>
+
+
+                <div className="field-detail-item">
+                  <span>Cluster</span>
+
+                  <strong>
+                    {selectedField.cluster_id ?? "N/A"}
+                  </strong>
+                </div>
+
+
+                <div className="field-detail-item">
+                  <span>Latitude</span>
+
+                  <strong>
+                    {selectedField.latitude ?? "N/A"}
+                  </strong>
+                </div>
+
+
+                <div className="field-detail-item">
+                  <span>Longitude</span>
+
+                  <strong>
+                    {selectedField.longitude ?? "N/A"}
+                  </strong>
+                </div>
+
+
+                {isAdmin && selectedField.farmer_name && (
+                  <div className="field-detail-item">
+                    <span>Farmer</span>
+
+                    <strong>
+                      {selectedField.farmer_name}
+                    </strong>
+                  </div>
+                )}
+
+              </div>
+
+
+              <div className="field-condition">
+
+                <span>Water Condition</span>
+
+                <p>
+                  {selectedField.description ||
+                    "Stress information unavailable."}
+                </p>
+
+              </div>
+
+            </div>
+
+          </section>
+        )}
 
       </main>
 
