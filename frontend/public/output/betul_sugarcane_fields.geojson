@@ -1,0 +1,141 @@
+{
+  "type": "FeatureCollection",
+  "name": "Betul Sugarcane Fields - Prototype Data",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "field_id": "F001",
+        "farmer_id": 2,
+        "stress_level": "Very Low",
+        "cluster_id": 1,
+        "area": 1.42,
+        "data_type": "DEMO"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[[77.9000,21.3000],[77.9020,21.3000],[77.9020,21.3020],[77.9000,21.3020],[77.9000,21.3000]]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "field_id": "F002",
+        "farmer_id": 2,
+        "stress_level": "Low",
+        "cluster_id": 1,
+        "area": 1.87,
+        "data_type": "DEMO"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[[77.9025,21.3000],[77.9045,21.3000],[77.9045,21.3020],[77.9025,21.3020],[77.9025,21.3000]]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "field_id": "F003",
+        "farmer_id": 2,
+        "stress_level": "Medium",
+        "cluster_id": 2,
+        "area": 2.13,
+        "data_type": "DEMO"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[[77.9050,21.3000],[77.9070,21.3000],[77.9070,21.3020],[77.9050,21.3020],[77.9050,21.3000]]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "field_id": "F004",
+        "farmer_id": 3,
+        "stress_level": "High",
+        "cluster_id": 2,
+        "area": 1.76,
+        "data_type": "DEMO"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[[77.9000,21.3025],[77.9020,21.3025],[77.9020,21.3045],[77.9000,21.3045],[77.9000,21.3025]]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "field_id": "F005",
+        "farmer_id": 3,
+        "stress_level": "Very High",
+        "cluster_id": 3,
+        "area": 2.31,
+        "data_type": "DEMO"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[[77.9025,21.3025],[77.9045,21.3025],[77.9045,21.3045],[77.9025,21.3045],[77.9025,21.3025]]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "field_id": "F006",
+        "farmer_id": 3,
+        "stress_level": "Medium",
+        "cluster_id": 3,
+        "area": 1.95,
+        "data_type": "DEMO"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[[77.9050,21.3025],[77.9070,21.3025],[77.9070,21.3045],[77.9050,21.3045],[77.9050,21.3025]]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "field_id": "F007",
+        "farmer_id": 2,
+        "stress_level": "Low",
+        "cluster_id": 4,
+        "area": 1.63,
+        "data_type": "DEMO"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[[77.9000,21.3050],[77.9020,21.3050],[77.9020,21.3070],[77.9000,21.3070],[77.9000,21.3050]]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "field_id": "F008",
+        "farmer_id": 3,
+        "stress_level": "High",
+        "cluster_id": 4,
+        "area": 2.08,
+        "data_type": "DEMO"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[[77.9025,21.3050],[77.9045,21.3050],[77.9045,21.3070],[77.9025,21.3070],[77.9025,21.3050]]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "field_id": "F009",
+        "farmer_id": 2,
+        "stress_level": "Very Low",
+        "cluster_id": 5,
+        "area": 1.51,
+        "data_type": "DEMO"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[[77.9050,21.3050],[77.9070,21.3050],[77.9070,21.3070],[77.9050,21.3070],[77.9050,21.3050]]]
+      }
+    }
+  ]
+}

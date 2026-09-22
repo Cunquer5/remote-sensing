@@ -314,3 +314,14 @@ button {
   }
 
 }
+
+/* ============================================================
+   Dashboard Welcome Heading
+   ============================================================ */
+
+.welcome-title {
+  color: #123c2a !important;
+  font-weight: 700;
+  opacity: 1 !important;
+  text-shadow: none;
+}

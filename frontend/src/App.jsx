@@ -1,46 +1,102 @@
+import { useState } from "react";
 import "./App.css";
+
+import Login from "./components/Login";
 import StressMap from "./components/StressMap";
 
-function App() {
+function Dashboard({ user, onLogout }) {
+  const isAdmin = user.role === "admin";
+
   return (
     <div className="app">
 
       {/* Header */}
       <header className="header">
+
         <div>
-          <h1>Sugarcane Water Stress Monitor</h1>
-          <p>Remote sensing based crop water-stress analysis</p>
+          <h1>
+            {isAdmin
+              ? "Admin Monitoring Portal"
+              : "Farmer Field Portal"}
+          </h1>
+
+          <p>
+            Sugarcane water-stress monitoring and field intelligence
+          </p>
         </div>
 
-        <div className="location">
-          📍 Betul
+        <div className="header-actions">
+
+          <div className="location">
+            📍 Betul
+          </div>
+
+          <div className="user-badge">
+            <strong>{user.name}</strong>
+            <span>{user.role}</span>
+          </div>
+
+          <button
+            className="logout-button"
+            onClick={onLogout}
+          >
+            Sign out
+          </button>
+
         </div>
+
       </header>
 
       {/* Main Dashboard */}
       <main className="dashboard">
 
+        {/* Welcome */}
+        <section className="welcome-section">
+
+          <div>
+            <span className="portal-label">
+              {isAdmin ? "ADMIN PORTAL" : "FARMER PORTAL"}
+            </span>
+
+            <h1 className="welcome-title">
+              Welcome, {user.name}
+            </h1>
+
+            <p>
+              {isAdmin
+                ? "Monitor sugarcane water stress across all registered fields."
+                : "View the water-stress condition of your registered fields."}
+            </p>
+          </div>
+
+        </section>
+
         {/* Summary Cards */}
         <section className="summary">
 
           <div className="stat-card">
-            <span>Total Fields</span>
-            <strong>247</strong>
+            <span>
+              {isAdmin ? "Total Fields" : "My Fields"}
+            </span>
+
+            <strong>
+              {isAdmin ? "247" : "3"}
+            </strong>
           </div>
 
           <div className="stat-card">
             <span>Very Low</span>
-            <strong>42</strong>
+            <strong>{isAdmin ? "42" : "1"}</strong>
           </div>
 
           <div className="stat-card">
             <span>Medium</span>
-            <strong>63</strong>
+            <strong>{isAdmin ? "63" : "1"}</strong>
           </div>
 
           <div className="stat-card">
             <span>High / Very High</span>
-            <strong>71</strong>
+            <strong>{isAdmin ? "71" : "1"}</strong>
           </div>
 
         </section>
@@ -48,14 +104,25 @@ function App() {
         {/* Map + Side Panel */}
         <section className="content-grid">
 
-          {/* Interactive Leaflet Map */}
+          {/* Map */}
           <div className="map-card">
 
             <div className="card-header">
+
               <div>
-                <h2>Water Stress Map</h2>
-                <p>Sugarcane field-level classification</p>
+                <h2>
+                  {isAdmin
+                    ? "Regional Water Stress Map"
+                    : "My Field Stress Map"}
+                </h2>
+
+                <p>
+                  {isAdmin
+                    ? "Field-level water stress classification across the monitored area"
+                    : "Water stress classification for your registered sugarcane fields"}
+                </p>
               </div>
+
             </div>
 
             <div className="map-container">
@@ -64,10 +131,12 @@ function App() {
 
           </div>
 
-          {/* Right Side Panel */}
+          {/* Right Panel */}
           <aside className="side-panel">
 
+            {/* Stress Legend */}
             <div className="card">
+
               <h2>Stress Levels</h2>
 
               <div className="legend-item">
@@ -94,9 +163,12 @@ function App() {
                 <span className="legend-dot very-high"></span>
                 Very High
               </div>
+
             </div>
 
+            {/* SAR Information */}
             <div className="card">
+
               <h2>SAR Information</h2>
 
               <div className="info-row">
@@ -111,34 +183,19 @@ function App() {
 
               <div className="info-row">
                 <span>Scenes Used</span>
-                <strong>3</strong>
+                <strong>{isAdmin ? "3" : "1"}</strong>
               </div>
+
+              <div className="info-row">
+                <span>Access</span>
+                <strong>
+                  {isAdmin ? "All Fields" : "Own Fields"}
+                </strong>
+              </div>
+
             </div>
 
           </aside>
-
-        </section>
-
-        {/* PNG Stress Map */}
-        <section className="preview-card">
-
-          <div>
-            <h2>Satellite Stress Map</h2>
-            <p>
-              Satellite-derived visualization of crop water stress.
-            </p>
-          </div>
-
-          <div className="png-preview">
-            <img
-              src="/output/betul_stress_map.png"
-              alt="Betul sugarcane water stress map"
-            />
-          </div>
-
-          <button>
-            Download GeoJSON
-          </button>
 
         </section>
 
@@ -147,5 +204,68 @@ function App() {
     </div>
   );
 }
+
+
+function App() {
+
+  const [user, setUser] = useState(() => {
+
+    const savedUser = localStorage.getItem("sugarcane_user");
+
+    if (!savedUser) {
+      return null;
+    }
+
+    try {
+      return JSON.parse(savedUser);
+    } catch {
+      localStorage.removeItem("sugarcane_user");
+      return null;
+    }
+
+  });
+
+
+  const handleLogin = (userData) => {
+
+    setUser(userData);
+
+    localStorage.setItem(
+      "sugarcane_user",
+      JSON.stringify(userData)
+    );
+
+  };
+
+
+  const handleLogout = () => {
+
+    localStorage.removeItem("sugarcane_user");
+
+    localStorage.removeItem("sugarcane_token");
+
+    setUser(null);
+
+  };
+
+
+  if (!user) {
+
+    return (
+      <Login onLogin={handleLogin} />
+    );
+
+  }
+
+
+  return (
+    <Dashboard
+      user={user}
+      onLogout={handleLogout}
+    />
+  );
+
+}
+
 
 export default App;
