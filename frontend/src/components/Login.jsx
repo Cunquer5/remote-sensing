@@ -55,11 +55,15 @@ function Login({ onLogin }) {
         );
       }
 
-      localStorage.setItem("token", data.token);
       localStorage.setItem(
-        "user",
-        JSON.stringify(data.user)
-      );
+  "sugarcane_token",
+  data.token
+);
+
+localStorage.setItem(
+  "sugarcane_user",
+  JSON.stringify(data.user)
+);
 
       onLogin(data.user);
     } catch (err) {

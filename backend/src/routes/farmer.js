@@ -57,6 +57,65 @@ router.get(
 );
 
 // --------------------------------------------------
+// Farmer dashboard statistics
+// --------------------------------------------------
+
+router.get(
+  "/stats",
+  authenticateToken,
+  requireFarmer,
+  (req, res) => {
+
+    const totalFields = db
+      .prepare(
+        "SELECT COUNT(*) AS count FROM fields WHERE farmer_id = ?"
+      )
+      .get(req.user.id).count;
+
+    const veryLow = db
+      .prepare(
+        "SELECT COUNT(*) AS count FROM fields WHERE farmer_id = ? AND stress_level = ?"
+      )
+      .get(req.user.id, "Very Low").count;
+
+    const low = db
+      .prepare(
+        "SELECT COUNT(*) AS count FROM fields WHERE farmer_id = ? AND stress_level = ?"
+      )
+      .get(req.user.id, "Low").count;
+
+    const medium = db
+      .prepare(
+        "SELECT COUNT(*) AS count FROM fields WHERE farmer_id = ? AND stress_level = ?"
+      )
+      .get(req.user.id, "Medium").count;
+
+    const high = db
+      .prepare(
+        "SELECT COUNT(*) AS count FROM fields WHERE farmer_id = ? AND stress_level = ?"
+      )
+      .get(req.user.id, "High").count;
+
+    const veryHigh = db
+      .prepare(
+        "SELECT COUNT(*) AS count FROM fields WHERE farmer_id = ? AND stress_level = ?"
+      )
+      .get(req.user.id, "Very High").count;
+
+    res.json({
+      totalFields,
+      stress: {
+        veryLow,
+        low,
+        medium,
+        high,
+        veryHigh
+      }
+    });
+  }
+);
+
+// --------------------------------------------------
 // Farmer dashboard
 // --------------------------------------------------
 
