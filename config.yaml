@@ -1,0 +1,8 @@
+# Betul sugarcane water-stress prototype config (parsed by backend.load_config).
+aoi:
+  name: Betul
+  bounds: [77.844, 21.82, 77.894, 21.87]
+scenes: 3
+output_dir: output
+paths:
+  landcover: data/landcover/landcover_100m.tif
