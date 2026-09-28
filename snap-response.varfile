@@ -1,0 +1,10 @@
+# install4j silent-install response file for ESA SNAP 9.0 (Debian-based image).
+# Only SNAP + Sentinel-1 Toolbox are needed; the installer ships its own JRE.
+sys.installationDir=/opt/snap
+sys.programGroupDisabled$Boolean=true
+sys.languageId=en
+sys.component.SNAP$Boolean=true
+sys.component.S1TBX$Boolean=true
+sys.component.S2TBX$Boolean=false
+sys.component.S3TBX$Boolean=false
+sys.component.RSTB$Boolean=false

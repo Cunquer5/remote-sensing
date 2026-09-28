@@ -182,8 +182,8 @@ def scene_grid(scene, bbox):
 
     nx = max(2, round((east - west) * 111320 * math.cos(math.radians(lat_c)) / PIXEL_M))
     ny = max(2, round((north - south) * 110540 / PIXEL_M))
-    xs = west + np.arange(nx) * 0.5 + (east - west) / nx
-    ys = south + np.arange(ny) * 0.5 + (north - south) / ny
+    xs = west + (np.arange(nx) + 0.5) * (east - west) / nx
+    ys = south + (np.arange(ny) + 0.5) * (north - south) / ny
     lon2d, lat2d = np.meshgrid(xs, ys)
     px, py = map_to_pixels(cx, cy, lon2d.ravel(), lat2d.ravel(), lon_c, lat_c, radius)
     px, py = np.round(px).astype(int), np.round(py).astype(int)
@@ -343,9 +343,11 @@ def _geom_to_wkt(geom):
 
 
 def main():
+    print("Searching STAC…", flush=True)
     scenes = find_scenes(BETUL_BBOX, SCENES, 180)
     if not scenes:
         raise RuntimeError("No Sentinel-1 GRD scenes found in the lookback window.")
+    print(f"Got {len(scenes)} scenes, processing…", flush=True)
     ratio, transform, crs, rms = stress_grid(scenes, BETUL_BBOX, LANDCOVER)
     labels, mapping = classify_stress(ratio)
     geojson, png = export(

@@ -77,3 +77,15 @@ def test_empty_clusters_do_not_break_ordering():
     assert labels.min() >= 0, labels.min()
     rank = backend.STRESS_LEVELS.index
     assert rank(mapping[labels[0, 0]]) < rank(mapping[labels[-1, -1]])
+
+
+def test_aoi_pixel_grid_stays_in_bounds():
+    """Regression: sample positions must span the AOI, not drift at 0.5 deg/step."""
+    west, south, east, north = BBOX
+    lat_c = (south + north) / 2
+    nx = max(2, round((east - west) * 111320 * np.cos(np.radians(lat_c)) / backend.PIXEL_M))
+    ny = max(2, round((north - south) * 110540 / backend.PIXEL_M))
+    xs = west + (np.arange(nx) + 0.5) * (east - west) / nx
+    ys = south + (np.arange(ny) + 0.5) * (north - south) / ny
+    assert xs.min() >= west and xs.max() < east, f"xs spans [{xs.min()}, {xs.max()}"
+    assert ys.min() >= south and ys.max() < north, f"ys spans [{ys.min()}, {ys.max()}]"
